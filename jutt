@@ -1,0 +1,65 @@
+import random
+
+def show_assets(assets):
+    print("\nCurrent Asset Values:")
+    for name, value in assets.items():
+        print(f"{name}: {value} per unit")
+
+def show_portfolio(portfolio):
+    print("\nYour Portfolio:")
+    for name, units in portfolio.items():
+        print(f"{name}: {units} units")
+
+def main():
+    money = 1000
+    assets = {
+        "Stock": 100,
+        "Gold": 50,
+        "Crypto": 200
+    }
+    portfolio = {
+        "Stock": 0,
+        "Gold": 0,
+        "Crypto": 0
+    }
+
+    rounds = 5
+    print("Welcome to the Finance Game!")
+    print(f"You have {money} rupees to invest.")
+
+    for r in range(1, rounds + 1):
+        print(f"\n--- Round {r} ---")
+        show_assets(assets)
+        show_portfolio(portfolio)
+        print(f"Available Cash: {money} rupees")
+
+        for asset in assets:
+            choice = input(f"Do you want to buy {asset}? (yes/no): ").lower()
+            if choice == "yes":
+                units = int(input(f"How many units of {asset} (price: {assets[asset]} each)?: "))
+                cost = units * assets[asset]
+                if cost <= money:
+                    money -= cost
+                    portfolio[asset] += units
+                    print(f"Bought {units} units of {asset}.")
+                else:
+                    print("Not enough money!")
+
+        # Random asset price change
+        for asset in assets:
+            change = random.randint(-30, 30)
+            assets[asset] += change
+            if assets[asset] < 1:
+                assets[asset] = 1
+
+    # Final calculation
+    print("\n--- Game Over ---")
+    show_assets(assets)
+    show_portfolio(portfolio)
+    total = money
+    for asset in assets:
+        total += portfolio[asset] * assets[asset]
+    print(f"Your final balance is: {total} rupees")
+
+if __name__ == "__main__":
+    main()
